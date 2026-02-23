@@ -1,0 +1,12 @@
+.users-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.user-form-elements {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}

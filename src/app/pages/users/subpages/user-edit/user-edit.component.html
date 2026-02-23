@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>
+  Edit user:
+  <h2>
+    <mat-dialog-content class="mat-typography">
+      <form class="users-form" [formGroup]="form" (ngSubmit)="edit()">
+        <div class="user-form-elements">
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" />
+            @if (form.controls.name.hasError('required')) {
+              <mat-error>Name required</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>surname</mat-label>
+            <input matInput formControlName="surname" />
+            @if (form.controls.surname.hasError('required')) {
+              <mat-error>Surname required</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Seniority</mat-label>
+            <mat-select formControlName="seniority">
+              @for (option of seniorityOptions; track option) {
+                <mat-option [value]="option">{{ option }}</mat-option>
+              }
+            </mat-select>
+            @if (form.controls.seniority.hasError('required')) {
+              <mat-error>Seniority required</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>years of experience</mat-label>
+            <input matInput formControlName="yearsOfExperience" type="number" min="0" />
+            @if (form.controls.yearsOfExperience.hasError('required')) {
+              <mat-error>Years of experience required</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Availability</mat-label>
+            <mat-select formControlName="availability">
+              @for (option of availabilityOptions; track option) {
+                <mat-option [value]="option">{{ option }}</mat-option>
+              }
+            </mat-select>
+            @if (form.controls.availability.hasError('required')) {
+              <mat-error>Availability required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <button matButton type="submit" [disabled]="!form.valid">Save</button>
+      </form>
+    </mat-dialog-content>
+  </h2>
+</h2>
