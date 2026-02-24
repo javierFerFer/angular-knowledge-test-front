@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { SeniorityOptions } from '../pages/users/subpages/user-create/user-create.component';
 
 export interface userModel {
@@ -16,7 +16,7 @@ export interface userModel {
 @Injectable({ providedIn: 'root' })
 export class UserApiService {
   private httpClient = inject(HttpClient);
-  private url = `${environment.baseUrl}:${environment.basePort}`;
+  private url = `${environment.baseUrl}${environment.basePort}`;
 
   getAllUsers(): Observable<userModel[]> {
     return this.httpClient.get(`${this.url}/users`) as Observable<userModel[]>;
