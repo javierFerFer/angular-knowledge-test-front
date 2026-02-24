@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-import { SeniorityOptions } from '../pages/users/components/user-form/user-form.component';
+import { SeniorityOptions } from '../pages/users/subpages/user-create/user-create.component';
 
 export interface userModel {
   id?: number;
@@ -32,5 +32,9 @@ export class UserApiService {
 
   deleteUserById(id: number) {
     return this.httpClient.delete(`${this.url}/users/${id}`) as Observable<userModel>;
+  }
+
+  updateUser(user: userModel) {
+    return this.httpClient.put(`${this.url}/users/${user.id}`, user) as Observable<userModel>;
   }
 }

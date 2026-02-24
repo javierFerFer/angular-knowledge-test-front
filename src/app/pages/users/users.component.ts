@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { UserFormComponent } from './components/user-form/user-form.component';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { UserTableComponent } from './components/user-table/user-table.component';
 
 @Component({
@@ -8,7 +8,13 @@ import { UserTableComponent } from './components/user-table/user-table.component
   templateUrl: 'users.component.html',
   styleUrl: 'users.component.css',
   standalone: true,
-  imports: [UserFormComponent, UserTableComponent, RouterOutlet],
+  imports: [UserTableComponent, RouterOutlet, MatButtonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersComponent {}
+export class UsersComponent {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  navigateToCreateNewUser() {
+    this.router.navigate(['create'], { relativeTo: this.route });
+  }
+}

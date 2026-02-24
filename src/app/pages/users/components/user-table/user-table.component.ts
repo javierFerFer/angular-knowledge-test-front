@@ -4,11 +4,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
+import { catchError, EMPTY, finalize, of, switchMap, take } from 'rxjs';
 import {
   AreYouSureComponent,
   modalBaseActionResponseEnum,
 } from '../../../../components/modals/are-you-sure/are-you-sure.component';
+import { SnackBarService } from '../../../../services/snackbar.service';
 import { UsersService } from '../../../../services/users.service';
 
 @Component({
@@ -24,6 +25,8 @@ export class UserTableComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
+  private readonly snackbarService = inject(SnackBarService);
+
   dataSource = this.usersService.usersList;
   displayedColumns: string[] = ['name', 'surname', 'seniority', 'years', 'availability', 'actions'];
 
@@ -40,11 +43,24 @@ export class UserTableComponent {
 
     dialogRef
       .afterClosed()
-      .pipe(take(1))
-      .subscribe((action) => {
-        if (action === modalBaseActionResponseEnum.YES) {
-          this.usersService.deleteUserById(id).pipe(take(1)).subscribe();
-        }
-      });
+      .pipe(
+        take(1),
+        switchMap((action) => {
+          if (action === modalBaseActionResponseEnum.YES) {
+            return this.usersService.deleteUserById(id).pipe(
+              take(1),
+              catchError(() => {
+                this.snackbarService.openKoAction();
+                return EMPTY;
+              }),
+              finalize(() => {
+                this.snackbarService.openOkAction();
+              }),
+            );
+          }
+          return of(action);
+        }),
+      )
+      .subscribe();
   }
 }

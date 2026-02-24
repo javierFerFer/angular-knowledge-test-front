@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>
-  Edit user:
+  Create user:
   <h2>
     <mat-dialog-content class="mat-typography">
-      <form class="users-form" [formGroup]="form" (ngSubmit)="edit()">
+      <form class="users-form" [formGroup]="form" (ngSubmit)="create()">
         <div class="user-form-elements">
           <mat-form-field>
             <mat-label>Name</mat-label>
@@ -48,7 +48,7 @@
             }
           </mat-form-field>
         </div>
-        <button matButton type="submit" [disabled]="!form.valid || !form.dirty">Save</button>
+        <button matButton type="submit" [disabled]="!form.valid">Create new user</button>
       </form>
     </mat-dialog-content>
   </h2>

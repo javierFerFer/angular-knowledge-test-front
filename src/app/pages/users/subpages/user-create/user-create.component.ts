@@ -10,12 +10,13 @@ import { Router } from '@angular/router';
 import { catchError, EMPTY, finalize, take } from 'rxjs';
 import { SnackBarService } from '../../../../services/snackbar.service';
 import { UsersService } from '../../../../services/users.service';
-import { SeniorityOptions } from '../user-create/user-create.component';
+
+export type SeniorityOptions = 'junior' | 'senior';
 
 @Component({
-  selector: 'app-user-edit',
-  templateUrl: 'user-edit.component.html',
-  styleUrl: 'user-edit.component.css',
+  selector: 'app-user-create',
+  templateUrl: 'user-create.component.html',
+  styleUrl: 'user-create.component.css',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -28,7 +29,7 @@ import { SeniorityOptions } from '../user-create/user-create.component';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserEditComponent implements OnInit {
+export class UserCreateComponent implements OnInit {
   protected seniorityOptions: SeniorityOptions[] = ['junior', 'senior'];
   protected availabilityOptions: boolean[] = [true, false];
 
@@ -55,11 +56,10 @@ export class UserEditComponent implements OnInit {
       });
   }
 
-  edit() {
+  create() {
     const formData = this.form.getRawValue();
     this.usersService
-      .updateUser({
-        id: this.usersService.selectedUser()?.id,
+      .createNewUser({
         name: formData.name!,
         availability: formData.availability!,
         seniority: formData.seniority!,
