@@ -1,7 +1,4 @@
 import { Routes } from '@angular/router';
-import { UserDetailsComponent } from './pages/users/subpages/details/user-details.component';
-import { UserCreateComponent } from './pages/users/subpages/user-create/user-create.component';
-import { UserEditComponent } from './pages/users/subpages/user-edit/user-edit.component';
 import { UserIdResolver } from './resolvers/user-id.resolver';
 import { UsersResolver } from './resolvers/users.resolver';
 
@@ -19,7 +16,10 @@ export const routes: Routes = [
       {
         path: 'create',
         data: {
-          componentToRender: UserCreateComponent,
+          componentToRenderPromise: () =>
+            import('./pages/users/subpages/user-create/user-create.component').then(
+              (m) => m.UserCreateComponent,
+            ),
         },
         loadComponent: () =>
           import('./components/modals/modal-wrapper/modal-wrapper.component').then(
@@ -30,7 +30,10 @@ export const routes: Routes = [
         path: 'details/:id',
         resolve: [UserIdResolver],
         data: {
-          componentToRender: UserDetailsComponent,
+          componentToRenderPromise: () =>
+            import('./pages/users/subpages/details/user-details.component').then(
+              (m) => m.UserDetailsComponent,
+            ),
         },
         loadComponent: () =>
           import('./components/modals/modal-wrapper/modal-wrapper.component').then(
@@ -41,7 +44,10 @@ export const routes: Routes = [
         path: 'edit/:id',
         resolve: [UserIdResolver],
         data: {
-          componentToRender: UserEditComponent,
+          componentToRenderPromise: () =>
+            import('./pages/users/subpages/user-edit/user-edit.component').then(
+              (m) => m.UserEditComponent,
+            ),
         },
         loadComponent: () =>
           import('./components/modals/modal-wrapper/modal-wrapper.component').then(
