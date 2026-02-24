@@ -55,14 +55,22 @@ export class UsersService {
     );
   }
 
-  updateUser(user: userModel) {
-    return this.userApiService.updateUser(user).pipe(
+  updateUser(userId: number, user: userModel) {
+    return this.userApiService.updateUser(userId, user).pipe(
       tap(() => {
         this.users.update((oldState) => ({
-          selected: user,
+          selected: {
+            id: userId,
+            ...user,
+          },
           list: [
             ...oldState.list.map((e) => {
-              return e.id !== user.id ? e : user;
+              return e.id !== userId
+                ? e
+                : {
+                    id: userId,
+                    ...user,
+                  };
             }),
           ],
         }));

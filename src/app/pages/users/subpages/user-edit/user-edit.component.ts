@@ -58,8 +58,7 @@ export class UserEditComponent implements OnInit {
   edit() {
     const formData = this.form.getRawValue();
     this.usersService
-      .updateUser({
-        id: this.usersService.selectedUser()?.id,
+      .updateUser(this.usersService.selectedUser()?.id!, {
         name: formData.name!,
         availability: formData.availability!,
         seniority: formData.seniority!,
