@@ -4,10 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, finalize, take } from 'rxjs';
+import { AppStateService } from '../../../../services/app-state.service';
 import { SnackBarService } from '../../../../services/snackbar.service';
 import { UsersService } from '../../../../services/users.service';
 import { SeniorityOptions } from '../user-create/user-create.component';
@@ -24,7 +25,7 @@ import { SeniorityOptions } from '../user-create/user-create.component';
     MatSelectModule,
     MatButtonModule,
     MatDialogModule,
-    MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -37,6 +38,9 @@ export class UserEditComponent implements OnInit {
   private readonly dialogRef = inject(MatDialogRef);
   private readonly router = inject(Router);
   private readonly snackBarService = inject(SnackBarService);
+  private readonly appStateService = inject(AppStateService);
+
+  protected readonly loadingState = this.appStateService.loadingState;
 
   protected form = this.fb.group({
     name: [this.usersService.selectedUser()?.name, Validators.required],

@@ -48,7 +48,13 @@
             }
           </mat-form-field>
         </div>
-        <button matButton type="submit" [disabled]="!form.valid">Create new user</button>
+        <button mat-button type="submit" [disabled]="!form.valid || this.loadingState()">
+          @if (this.loadingState()) {
+            <mat-spinner [diameter]="16"></mat-spinner>
+          } @else {
+            <span>Create new user</span>
+          }
+        </button>
       </form>
     </mat-dialog-content>
   </h2>

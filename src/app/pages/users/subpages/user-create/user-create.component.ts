@@ -4,10 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, finalize, take } from 'rxjs';
+import { AppStateService } from '../../../../services/app-state.service';
 import { SnackBarService } from '../../../../services/snackbar.service';
 import { UsersService } from '../../../../services/users.service';
 
@@ -25,7 +26,7 @@ export type SeniorityOptions = 'junior' | 'senior';
     MatSelectModule,
     MatButtonModule,
     MatDialogModule,
-    MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -35,17 +36,20 @@ export class UserCreateComponent implements OnInit {
 
   private fb = inject(FormBuilder);
   private usersService = inject(UsersService);
+  private appStateService = inject(AppStateService);
   private readonly dialogRef = inject(MatDialogRef);
   private readonly router = inject(Router);
   private readonly snackBarService = inject(SnackBarService);
 
   protected form = this.fb.group({
-    name: [this.usersService.selectedUser()?.name, Validators.required],
-    surname: [this.usersService.selectedUser()?.surname, Validators.required],
-    seniority: [this.usersService.selectedUser()?.seniority, Validators.required],
-    yearsOfExperience: [this.usersService.selectedUser()?.yearsOfExperience, Validators.required],
-    availability: [this.usersService.selectedUser()?.availability, Validators.required],
+    name: ['', Validators.required],
+    surname: ['', Validators.required],
+    seniority: [this.seniorityOptions[0], Validators.required],
+    yearsOfExperience: [0, Validators.required],
+    availability: [false, Validators.required],
   });
+
+  protected readonly loadingState = this.appStateService.loadingState;
 
   ngOnInit(): void {
     this.dialogRef

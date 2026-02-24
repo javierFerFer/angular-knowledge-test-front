@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { AppStateService } from '../../../services/app-state.service';
 
 export enum modalBaseActionResponseEnum {
   YES = 'yes',
@@ -16,6 +17,9 @@ export enum modalBaseActionResponseEnum {
 })
 export class AreYouSureComponent {
   private readonly dialogRef = inject(MatDialogRef);
+  private readonly appStateService = inject(AppStateService);
+  protected readonly loadingState = this.appStateService.loadingState;
+
   onNoClick() {
     this.dialogRef.close(modalBaseActionResponseEnum.NO);
   }
